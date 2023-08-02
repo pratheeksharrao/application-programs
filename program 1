@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <string.h>
+
+void swapStrings(char *str1, char *str2) {
+    char temp[100];
+    strcpy(temp, str1);
+    strcpy(str1, str2);
+    strcpy(str2, temp);
+}
+
+int partition(char names[][100], int low, int high) {
+    char pivot[100];
+    strcpy(pivot, names[high]);
+
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (strcmp(names[j], pivot) < 0) {
+            i++;
+            swapStrings(names[i], names[j]);
+        }
+    }
+    swapStrings(names[i + 1], names[high]);
+    return (i + 1);
+}
+
+void quickSort(char names[][100], int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(names, low, high);
+        quickSort(names, low, pivotIndex - 1);
+        quickSort(names, pivotIndex + 1, high);
+    }
+}
+
+int main() {
+    int numOfNames;
+
+    printf("Enter the number of names in the attendance register: ");
+    scanf("%d", &numOfNames);
+
+    char namesArray[numOfNames][100];
+
+    printf("Enter the names:\n");
+    for (int i = 0; i < numOfNames; i++) {
+        scanf("%s", namesArray[i]);
+    }
+
+    quickSort(namesArray, 0, numOfNames - 1);
+
+    printf("\nSorted list of names:\n");
+    for (int i = 0; i < numOfNames; i++) {
+        printf("%s\n", namesArray[i]);
+    }
+
+    return 0;
+}
